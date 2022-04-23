@@ -1,4 +1,3 @@
-import { game } from "@akashic/akashic-engine/index.runtime";
 import { GameMainParameterObject, RPGAtsumaruWindow } from "./parameterObject"
 import EndScene from "./scene/EndScene";
 import GameScene from "./scene/GameScene";
@@ -20,7 +19,7 @@ export function main(param: GameMainParameterObject): void {
 		assetIds: ["player", "shot", "se"]
 	});
 	/** 制限時間 */
-	let time = 70
+	let time = GAME_TIME_SEC
 	if (param.sessionParameter.totalTimeLimit) {
 		// セッションパラメータで制限時間が指定されたらその値を使用します
 		time = param.sessionParameter.totalTimeLimit
