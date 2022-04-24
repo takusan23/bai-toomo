@@ -11,9 +11,6 @@ class ToomoManager {
     /** ゲームの幅 */
     private gameWidth = g.game.width
 
-    /** ゲームの高さ */
-    private gameHeight = g.game.height
-
     /** トーモの画像ID配列。シーンに予め登録しておいてください */
     static ASSET_IDS = [
         "ccc",
@@ -74,7 +71,7 @@ class ToomoManager {
             scene: this.scene,
             src: image,
             x: this.gameWidth - image.width,
-            y: 80
+            y: 50 - (image.height / 2)
         })
         // tag にデータを入れておく
         sprite.tag = toomoData

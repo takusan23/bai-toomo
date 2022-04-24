@@ -120,6 +120,34 @@
 			"type": "script",
 			"path": "script/tool/RandomTool.js",
 			"global": true
+		},
+		"box": {
+			"type": "image",
+			"path": "image/box.png",
+			"width": 200,
+			"height": 100
+		},
+		"BoxManager": {
+			"type": "script",
+			"path": "script/BoxManager.js",
+			"global": true
+		},
+		"BoxData": {
+			"type": "script",
+			"path": "script/data/BoxData.js",
+			"global": true
+		},
+		"box_finish": {
+			"type": "image",
+			"path": "image/box_finish.png",
+			"width": 200,
+			"height": 100
+		},
+		"new_box": {
+			"type": "image",
+			"path": "image/new_box.png",
+			"width": 100,
+			"height": 100
 		}
 	},
 	"moduleMainScripts": {},

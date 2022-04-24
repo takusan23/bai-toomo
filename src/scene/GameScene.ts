@@ -1,5 +1,6 @@
-import RandomTool from "../tool/RandomTool"
+import BoxManager from "../BoxManager"
 import ToomoManager from "../ToomoManager"
+import RandomTool from "../tool/RandomTool"
 
 /**
  * ゲーム画面（本編）
@@ -15,7 +16,7 @@ class GameScene {
     private gameHeight = g.game.height
 
     /** 使うアセットのID配列 */
-    private static ASSET_IDS = ToomoManager.ASSET_IDS
+    private static ASSET_IDS = ToomoManager.ASSET_IDS.concat(BoxManager.ASSET_IDS)
 
     /** ゲームが流れているシーン */
     scene = new g.Scene({
@@ -26,6 +27,9 @@ class GameScene {
 
     /** トーモを生成して管理するクラス */
     private toomoManager = new ToomoManager(this.scene)
+
+    /** ダンボール箱を管理しておくクラス */
+    private boxManager = new BoxManager(this.scene)
 
     /** フォントの生成 */
     private font = new g.DynamicFont({
@@ -52,6 +56,12 @@ class GameScene {
             // 画面に追加する
             this.scene.append(this.createBackgroundRect())
             this.scene.append(this.timeLabel)
+            this.scene.append(this.boxManager.createNewBoxButton(() => {
+                // ボタン押したとき
+                // 次の箱へ切り替え
+                this.scene.append(this.boxManager.nextBox())
+            }))
+            this.scene.append(this.boxManager.nextBox(true))
 
             // 定期実行。setIntervalもAkashicEngineで用意されてる方を使う。これもニコ生のTSを考慮しているらしい。
             this.scene.setInterval(() => {
@@ -65,7 +75,7 @@ class GameScene {
             }, 500)
 
         })
-        // 毎フレーム呼ばれる
+        // 毎フレーム呼ぶようにする
         this.scene.onUpdate.add(() => {
             this.toomoManager.requestUpdate((sprite) => {
 
