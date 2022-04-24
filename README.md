@@ -42,3 +42,9 @@ npm test
 ```
 
 テストコードのサンプルとして `spec/testSpec.js` を用意していますので参考にしてテストコードを記述して下さい。
+
+## そのほか
+
+- 書かれた TypeScript は ES5なJavaScript で動くようにトランスパイルされるようになっています
+    - Akashic Engine 的には ES5 以降の機能は使わないほうが良いみたい
+    - コールバック地獄しんどくない？、async / await ほしい

@@ -4,18 +4,6 @@
 	"fps": 30,
 	"main": "./script/_bootstrap.js",
 	"assets": {
-		"player": {
-			"type": "image",
-			"width": 32,
-			"height": 32,
-			"path": "image/player.png"
-		},
-		"shot": {
-			"type": "image",
-			"width": 16,
-			"height": 16,
-			"path": "image/shot.png"
-		},
 		"se": {
 			"type": "audio",
 			"path": "audio/se",
@@ -62,6 +50,75 @@
 		"TitleScene": {
 			"type": "script",
 			"path": "script/scene/TitleScene.js",
+			"global": true
+		},
+		"ccc": {
+			"type": "image",
+			"path": "image/ccc.png",
+			"width": 80,
+			"height": 76
+		},
+		"drink": {
+			"type": "image",
+			"path": "image/drink.png",
+			"width": 80,
+			"height": 69
+		},
+		"glass_1": {
+			"type": "image",
+			"path": "image/glass_1.png",
+			"width": 80,
+			"height": 101
+		},
+		"glass_2": {
+			"type": "image",
+			"path": "image/glass_2.png",
+			"width": 80,
+			"height": 107
+		},
+		"intai": {
+			"type": "image",
+			"path": "image/intai.png",
+			"width": 80,
+			"height": 76
+		},
+		"kiyomizu": {
+			"type": "image",
+			"path": "image/kiyomizu.png",
+			"width": 60,
+			"height": 76
+		},
+		"mask": {
+			"type": "image",
+			"path": "image/mask.png",
+			"width": 80,
+			"height": 64
+		},
+		"syoumei": {
+			"type": "image",
+			"path": "image/syoumei.png",
+			"width": 80,
+			"height": 73
+		},
+		"lemon": {
+			"type": "image",
+			"path": "image/lemon.png",
+			"width": 80,
+			"height": 67
+		},
+		"ToomoData": {
+			"type": "script",
+			"path": "script/data/ToomoData.js",
+			"global": true
+		},
+		"ToomoManager": {
+			"type": "script",
+			"path": "script/ToomoManager.js",
+			"global": true
+		},
+		"RandomTool": {
+			"type": "script",
+			"path": "script/tool/RandomTool.js",
 			"global": true
 		}
 	},

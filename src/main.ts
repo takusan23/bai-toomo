@@ -58,9 +58,10 @@ export function main(param: GameMainParameterObject): void {
 			if (time <= 5) {
 				g.game.pushScene(EndScene.createEndScene())
 			}
-
 		}
 		gameScene.scene.onUpdate.add(updateHandler)
+
+		// ゲーム画面へ切り替え
 		g.game.pushScene(gameScene.scene)
 
 	}, TITLE_VISIBLE_TIME_MS)
