@@ -148,6 +148,11 @@
 			"path": "image/new_box.png",
 			"width": 100,
 			"height": 100
+		},
+		"ProgressBar": {
+			"type": "script",
+			"path": "script/ProgressBar.js",
+			"global": true
 		}
 	},
 	"moduleMainScripts": {},

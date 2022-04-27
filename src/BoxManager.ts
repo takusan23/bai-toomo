@@ -3,6 +3,9 @@ import BoxData from "./data/BoxData"
 /** ダンボールの画像、入ったトーモを管理するクラス */
 class BoxManager {
 
+    /** 箱の移動速度 */
+    private static readonly SPEED = 30
+
     /** ゲームの幅 */
     private gameWidth = g.game.width
 
@@ -110,7 +113,7 @@ class BoxManager {
      * @param maxPoint 最大ポイント
      * @return BoxData
      */
-    private createBoxData = (maxPoint: number = 500): BoxData => ({
+    private createBoxData = (maxPoint: number = 3000): BoxData => ({
         currentPoint: 0,
         maxPoint: maxPoint,
         isFinished: false
@@ -121,8 +124,9 @@ class BoxManager {
         const boxSprite = this.getCurrentBoxSprite()
         if (boxSprite !== null) {
             const updateFunc = () => {
-                if (((this.gameWidth - boxSprite.width) / 2) < boxSprite.x) {
-                    boxSprite.x -= 10
+                const centerXPos = (this.gameWidth - boxSprite.width) / 2
+                if (centerXPos < boxSprite.x) {
+                    boxSprite.x = Math.max(boxSprite.x - BoxManager.SPEED, centerXPos)
                     boxSprite.modified()
                 } else {
                     boxSprite.onUpdate.remove(updateFunc)
@@ -146,7 +150,7 @@ class BoxManager {
             const updateFunc = () => {
                 // 横にズサーッ
                 if (0 <= (boxSprite.x + boxSprite.width)) {
-                    boxSprite.x -= 10
+                    boxSprite.x -= BoxManager.SPEED
                     boxSprite.modified()
                 } else {
                     // 破棄する

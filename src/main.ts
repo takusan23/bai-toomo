@@ -43,6 +43,7 @@ export function main(param: GameMainParameterObject): void {
 		// 5秒引いておく
 		time -= 5
 
+		// 最後のダンボール送出を終えたか
 		const updateHandler = () => {
 			if (time <= 0) {
 				// ゲームアツマール環境であればランキングを表示します
@@ -52,8 +53,6 @@ export function main(param: GameMainParameterObject): void {
 						window.RPGAtsumaru.experimental.scoreboards.display(boardId)
 					});
 				}
-				// カウントダウンを止めるためにこのイベントハンドラを削除します
-				scene.onUpdate.remove(updateHandler)
 			}
 			// カウントダウン処理
 			time -= 1 / g.game.fps
@@ -62,7 +61,12 @@ export function main(param: GameMainParameterObject): void {
 
 			// 時間が残り5秒前になったら終了画面に切り替える
 			if (time <= 5) {
+				// 今あるダンボールを最後送る
+				g.game.vars.gameState.score += gameScene.nextBox()
+				// 終了画面へ
 				g.game.pushScene(EndScene.createEndScene())
+				// タイマー停止
+				scene.onUpdate.remove(updateHandler)
 			}
 		}
 		gameScene.scene.onUpdate.add(updateHandler)

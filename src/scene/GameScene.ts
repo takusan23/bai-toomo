@@ -1,8 +1,8 @@
 import BoxManager from "../BoxManager"
 import ToomoManager from "../ToomoManager"
 import RandomTool from "../tool/RandomTool"
-import BoxData from "../data/BoxData"
 import ToomoData from "../data/ToomoData"
+import ProgressBar from "../ProgressBar"
 
 /**
  * ゲーム画面（本編）
@@ -32,6 +32,9 @@ class GameScene {
 
     /** ダンボール箱を管理しておくクラス */
     private boxManager = new BoxManager(this.scene)
+
+    /** プログレスバーを管理するクラス */
+    private progressBar = new ProgressBar(this.scene)
 
     /** フォントの生成 */
     private font = new g.DynamicFont({
@@ -76,14 +79,16 @@ class GameScene {
             this.scene.append(this.scoreLabel)
             // ダンボール追加ボタン。コールバック関数はボタン押したとき
             this.scene.append(this.boxManager.createNewBoxButton(() => {
-                // 得点に追加する
-                // TODO ピッタリのときに最大ポイント
-                onPointReceive(this.boxManager.getCurrentBoxData()?.currentPoint ?? 0)
-                // 次の箱へ切り替え
-                this.scene.append(this.boxManager.nextBox())
+                // 得点に追加して、次の箱へ切り替える
+                onPointReceive(this.nextBox())
             }))
             // 最初のダンボール
             this.scene.append(this.boxManager.nextBox(true))
+
+            // プログレスバー、真ん中に設置する
+            this.progressBar.setPosition((this.gameWidth - ProgressBar.VIEW_WIDTH) / 2, this.gameHeight - ProgressBar.VIEW_HEIGHT)
+            this.progressBar.setProgress(0)
+            this.progressBar.addToScene()
 
             // 定期実行。setIntervalもAkashicEngineで用意されてる方を使う。これもニコ生のTSを考慮しているらしい。
             this.scene.setInterval(() => {
@@ -102,10 +107,14 @@ class GameScene {
             this.toomoManager.requestUpdate((sprite) => {
                 // 当たり判定
                 const currentBox = this.boxManager.getCurrentBoxSprite()
-                if (currentBox !== null && g.Collision.intersectAreas(currentBox, sprite)) {
+                const currentBoxData = this.boxManager.getCurrentBoxData()
+                if (currentBox !== null && currentBoxData !== null && g.Collision.intersectAreas(currentBox, sprite)) {
                     // あたった
                     // ダンボールに詰めていく
-                    (currentBox.tag as BoxData).currentPoint += (sprite.tag as ToomoData).point;
+                    currentBoxData.currentPoint += (sprite.tag as ToomoData).point;
+                    // プログレスバーを再描画する
+                    this.progressBar.setMax(currentBoxData.maxPoint);
+                    this.progressBar.setProgress(currentBoxData.currentPoint);
                     // トーモを消す
                     (sprite.tag as ToomoData).isActive = false
                     sprite.destroy()
@@ -132,6 +141,25 @@ class GameScene {
     setScoreText = (score: number) => {
         this.scoreLabel.text = `点数: ${score}`
         this.scoreLabel.invalidate()
+    }
+
+    /**
+     * 次のダンボールへ切り替える 
+     * @return 加点する点数、問題がある場合は0を返す
+     */
+    nextBox = (): number => {
+        // 得点に追加する
+        const currentBoxData = this.boxManager.getCurrentBoxData()
+        if (currentBoxData === null) {
+            return 0
+        }
+        // 多すぎた場合と少なすぎた場合は減点になる
+        const lostPoint = Math.abs(currentBoxData.maxPoint - currentBoxData.currentPoint)
+        const calcPoint = Math.max(0, currentBoxData.maxPoint - lostPoint)
+        // 次の箱へ切り替え
+        this.scene.append(this.boxManager.nextBox())
+        // 点数を返す
+        return calcPoint
     }
 
     /**
