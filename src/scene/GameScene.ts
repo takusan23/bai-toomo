@@ -66,7 +66,6 @@ class GameScene {
 
     /**
      * コンストラクタ、初期化処理
-     * 
      * @param onPointReceive 得点加算の際に呼ばれます。
      */
     constructor(onPointReceive: ((addPoint: number) => void)) {
@@ -92,14 +91,16 @@ class GameScene {
 
             // 定期実行。setIntervalもAkashicEngineで用意されてる方を使う。これもニコ生のTSを考慮しているらしい。
             this.scene.setInterval(() => {
-
-                // 遅延させてからトーモを生成する
-                this.scene.setTimeout(() => {
-                    const toomoSprite = this.toomoManager.generateToomo()
-                    this.scene.append(toomoSprite)
-                }, RandomTool.getRandom(100, 500))
-
+                // トーモを生成する
+                this.registerToomoGenerator()
             }, 500)
+
+            // 20秒後に2倍に増やす
+            this.scene.setTimeout(() => {
+                this.scene.setInterval(() => {
+                    this.registerToomoGenerator()
+                }, 500)
+            }, 20_000)
 
         })
         // 毎フレーム呼ぶようにする
@@ -125,7 +126,6 @@ class GameScene {
 
     /**
      * 残り時間を表示する
-     * 
      * @param sec 残り時間
      */
     setTimeText = (sec: number) => {
@@ -135,7 +135,6 @@ class GameScene {
 
     /**
      * 今の点数をセットする
-     * 
      * @param score 点数
      */
     setScoreText = (score: number) => {
@@ -162,9 +161,17 @@ class GameScene {
         return calcPoint
     }
 
+    /** トーモを定期的に生成する関数 */
+    registerToomoGenerator = () => {
+        // 遅延させてからトーモを生成する
+        this.scene.setTimeout(() => {
+            const toomoSprite = this.toomoManager.generateToomo()
+            this.scene.append(toomoSprite)
+        }, RandomTool.getRandom(100, 500))
+    }
+
     /**
      * 背景を作る
-     * 
      * @returns 背景
      */
     private createBackgroundRect = () => {
