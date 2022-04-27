@@ -32,8 +32,14 @@ export function main(param: GameMainParameterObject): void {
 
 	// 5秒待機してからゲーム開始
 	titleScene.setTimeout(() => {
+
 		// クラスの切り出した
-		const gameScene = new GameScene()
+		const gameScene = new GameScene((addPoint) => {
+			// 点数加点
+			g.game.vars.gameState.score += addPoint
+			gameScene.setScoreText(g.game.vars.gameState.score)
+		})
+
 		// 5秒引いておく
 		time -= 5
 

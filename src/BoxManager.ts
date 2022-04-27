@@ -82,6 +82,29 @@ class BoxManager {
     }
 
     /**
+     * 現在のダンボールのSpriteを返す、ない場合はnull
+     * 
+     * "strictNullChecks": true にしてね
+     * 
+     * @return Sprite
+     */
+    getCurrentBoxSprite = (): g.Sprite | null => (!this.isEmpty()) ? this.boxList[this.boxList.length - 1] : null
+
+    /**
+     * 現在のダンボールの BoxData を返す、ない場合はnull
+     * 
+     * @return BoxData
+     */
+    getCurrentBoxData = (): BoxData | null => {
+        const sprite = this.getCurrentBoxSprite()
+        if (sprite !== null) {
+            return sprite.tag as BoxData
+        } else {
+            return null
+        }
+    }
+
+    /**
      * BoxData を返す
      * 
      * @param maxPoint 最大ポイント
@@ -92,15 +115,6 @@ class BoxManager {
         maxPoint: maxPoint,
         isFinished: false
     })
-
-    /**
-     * 現在のダンボールのSpriteを返す、ない場合はnull
-     * 
-     * "strictNullChecks": true にしてね
-     * 
-     * @return Sprite
-     */
-    private getCurrentBoxSprite = (): g.Sprite | null => (!this.isEmpty()) ? this.boxList[this.boxList.length - 1] : null
 
     /** 今のダンボールを真ん中へ移動させる */
     private activateCurrentBox = () => {

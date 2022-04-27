@@ -1,6 +1,8 @@
 import BoxManager from "../BoxManager"
 import ToomoManager from "../ToomoManager"
 import RandomTool from "../tool/RandomTool"
+import BoxData from "../data/BoxData"
+import ToomoData from "../data/ToomoData"
 
 /**
  * ゲーム画面（本編）
@@ -48,19 +50,39 @@ class GameScene {
         x: 10
     })
 
-    /** コンストラクタ、初期化処理 */
-    constructor() {
+    /** 点数を表示するラベル */
+    private scoreLabel = new g.Label({
+        scene: this.scene,
+        text: "点数: 0",
+        font: this.font,
+        fontSize: this.font.size / 2,
+        textColor: "black",
+        x: 10,
+        y: this.timeLabel.height
+    })
+
+    /**
+     * コンストラクタ、初期化処理
+     * 
+     * @param onPointReceive 得点加算の際に呼ばれます。
+     */
+    constructor(onPointReceive: ((addPoint: number) => void)) {
         // 画像等はロード後に呼び出す
         this.scene.onLoad.add(() => {
 
             // 画面に追加する
             this.scene.append(this.createBackgroundRect())
             this.scene.append(this.timeLabel)
+            this.scene.append(this.scoreLabel)
+            // ダンボール追加ボタン。コールバック関数はボタン押したとき
             this.scene.append(this.boxManager.createNewBoxButton(() => {
-                // ボタン押したとき
+                // 得点に追加する
+                // TODO ピッタリのときに最大ポイント
+                onPointReceive(this.boxManager.getCurrentBoxData()?.currentPoint ?? 0)
                 // 次の箱へ切り替え
                 this.scene.append(this.boxManager.nextBox())
             }))
+            // 最初のダンボール
             this.scene.append(this.boxManager.nextBox(true))
 
             // 定期実行。setIntervalもAkashicEngineで用意されてる方を使う。これもニコ生のTSを考慮しているらしい。
@@ -78,7 +100,16 @@ class GameScene {
         // 毎フレーム呼ぶようにする
         this.scene.onUpdate.add(() => {
             this.toomoManager.requestUpdate((sprite) => {
-
+                // 当たり判定
+                const currentBox = this.boxManager.getCurrentBoxSprite()
+                if (currentBox !== null && g.Collision.intersectAreas(currentBox, sprite)) {
+                    // あたった
+                    // ダンボールに詰めていく
+                    (currentBox.tag as BoxData).currentPoint += (sprite.tag as ToomoData).point;
+                    // トーモを消す
+                    (sprite.tag as ToomoData).isActive = false
+                    sprite.destroy()
+                }
             })
         })
     }
@@ -91,6 +122,16 @@ class GameScene {
     setTimeText = (sec: number) => {
         this.timeLabel.text = `残り時間: ${Math.ceil(sec)}秒`
         this.timeLabel.invalidate()
+    }
+
+    /**
+     * 今の点数をセットする
+     * 
+     * @param score 点数
+     */
+    setScoreText = (score: number) => {
+        this.scoreLabel.text = `点数: ${score}`
+        this.scoreLabel.invalidate()
     }
 
     /**

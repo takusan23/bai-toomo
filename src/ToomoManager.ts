@@ -26,16 +26,16 @@ class ToomoManager {
     /** 出場者一覧、一人何役だよ */
     private static TOOMO_DATA_LIST: Array<ToomoData> = [
         // 過去作から特別出演
-        { assetId: "intai", displayName: "引退", point: 200, speed: 10 },
-        { assetId: "kiyomizu", displayName: "清水寺", point: 200, speed: 10 },
+        { assetId: "intai", displayName: "引退", point: 200, speed: 10, isActive: true },
+        { assetId: "kiyomizu", displayName: "清水寺", point: 200, speed: 10, isActive: true },
         // こっから令和2022最新版画像
-        { assetId: "ccc", displayName: "ココナッツ", point: 100, speed: 20 },
-        { assetId: "drink", displayName: "ごくごく", point: 200, speed: 10 },
-        { assetId: "glass_1", displayName: "メガネ", point: 200, speed: 10 },
-        { assetId: "glass_2", displayName: "サングラス", point: 200, speed: 10 },
-        { assetId: "mask", displayName: "感染症対策", point: 400, speed: 20 },
-        { assetId: "syoumei", displayName: "証明写真", point: 400, speed: 20 },
-        { assetId: "lemon", displayName: "レモン2", point: 300, speed: 30 },
+        { assetId: "ccc", displayName: "ココナッツ", point: 100, speed: 20, isActive: true },
+        { assetId: "drink", displayName: "ごくごく", point: 200, speed: 10, isActive: true },
+        { assetId: "glass_1", displayName: "メガネ", point: 200, speed: 10, isActive: true },
+        { assetId: "glass_2", displayName: "サングラス", point: 200, speed: 10, isActive: true },
+        { assetId: "mask", displayName: "感染症対策", point: 400, speed: 20, isActive: true },
+        { assetId: "syoumei", displayName: "証明写真", point: 400, speed: 20, isActive: true },
+        { assetId: "lemon", displayName: "レモン2", point: 300, speed: 30, isActive: true },
     ]
 
     /**
@@ -64,7 +64,8 @@ class ToomoManager {
      */
     generateToomo = (assetId: string = this.randomId()): g.Sprite => {
         // 情報取得
-        const toomoData = this.findToomoDataByAssetId(assetId)
+        // ディープコピーする必要があります
+        const toomoData = { ...this.findToomoDataByAssetId(assetId) }
         // Sprite 作成
         const image = this.scene.asset.getImageById(toomoData.assetId)
         const sprite = new g.Sprite({
@@ -86,20 +87,23 @@ class ToomoManager {
      * @param onEach 各Spriteを動かすので動かした後に呼ばれます
      */
     requestUpdate = (onEach: (sprite: g.Sprite) => void) => {
-        this.toomoSpriteList.forEach((sprite) => {
-            const toomoData = (sprite.tag as ToomoData)
-            // 真ん中を超えたら下に移動する
-            if ((sprite.x + (sprite.width / 2)) <= (this.gameWidth / 2)) {
-                // 下に移動する
-                sprite.y += toomoData.speed
-            } else {
-                // 横に移動
-                sprite.x -= toomoData.speed
-            }
-            // 再描画
-            sprite.modified()
-            onEach(sprite)
-        })
+        this.toomoSpriteList
+            // 破棄済みの場合はやらない、アクティブ状態なもののみ
+            .filter((sprite) => (sprite.tag as ToomoData).isActive)
+            .forEach((sprite) => {
+                const toomoData = (sprite.tag as ToomoData)
+                // 真ん中を超えたら下に移動する
+                if ((sprite.x + (sprite.width / 2)) <= (this.gameWidth / 2)) {
+                    // 下に移動する
+                    sprite.y += toomoData.speed
+                } else {
+                    // 横に移動
+                    sprite.x -= toomoData.speed
+                }
+                // 再描画
+                sprite.modified()
+                onEach(sprite)
+            })
     }
 
     /**
