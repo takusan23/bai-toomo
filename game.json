@@ -4,12 +4,6 @@
 	"fps": 30,
 	"main": "./script/_bootstrap.js",
 	"assets": {
-		"se": {
-			"type": "audio",
-			"path": "audio/se",
-			"systemId": "sound",
-			"duration": 250
-		},
 		"_bootstrap": {
 			"type": "script",
 			"path": "script/_bootstrap.js",
@@ -165,6 +159,24 @@
 			"path": "image/fill_rail.png",
 			"width": 660,
 			"height": 20
+		},
+		"sokuzitu_saiyou": {
+			"type": "audio",
+			"path": "audio/sokuzitu_saiyou",
+			"systemId": "sound",
+			"duration": 1045
+		},
+		"danbooru": {
+			"type": "audio",
+			"path": "audio/danbooru",
+			"systemId": "sound",
+			"duration": 627
+		},
+		"burakku_kigyou": {
+			"type": "audio",
+			"path": "audio/burakku_kigyou",
+			"systemId": "sound",
+			"duration": 3275
 		}
 	},
 	"moduleMainScripts": {},

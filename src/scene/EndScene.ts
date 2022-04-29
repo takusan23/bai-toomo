@@ -24,7 +24,7 @@ class EndScene {
         const endScene = new g.Scene({
             game: g.game,
             // このシーンで利用するアセットのIDを列挙し、シーンに通知します
-            assetIds: ["end"]
+            assetIds: ["end", "burakku_kigyou"]
         })
         // 読み込んだら
         endScene.onLoad.add(() => {
@@ -33,6 +33,8 @@ class EndScene {
                 src: endScene.asset.getImageById("end"),
             })
             endScene.append(endImage)
+            // 「ブラック企業かもしれません」を再生
+            endScene.asset.getAudioById("burakku_kigyou").play();
 
             // スコアを表示
             const scoreLabel = EndScene.createLabel(

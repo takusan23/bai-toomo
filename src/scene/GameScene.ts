@@ -21,7 +21,7 @@ class GameScene {
     private static ASSET_IDS =
         ToomoManager.ASSET_IDS
             .concat(BoxManager.ASSET_IDS)
-            .concat(['rail', 'fill_rail'])
+            .concat(["rail", "fill_rail", "danbooru"])
 
     /** ゲームが流れているシーン */
     scene = new g.Scene({
@@ -83,6 +83,8 @@ class GameScene {
             this.scene.append(this.scoreLabel)
             // ダンボール追加ボタン。コールバック関数はボタン押したとき
             this.scene.append(this.boxManager.createNewBoxButton(() => {
+                // 「ダンボール」音声を再生
+                this.scene.asset.getAudioById("danbooru").play();
                 // 得点に追加して、次の箱へ切り替える
                 onPointReceive(this.nextBox())
             }))

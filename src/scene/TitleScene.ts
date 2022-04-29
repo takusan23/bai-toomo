@@ -12,7 +12,7 @@ class TitleScene {
         const titleScene = new g.Scene({
             game: g.game,
             // このシーンで利用するアセットのIDを列挙し、シーンに通知します
-            assetIds: ["title"]
+            assetIds: ["title", "sokuzitu_saiyou"]
         })
         // 読み込んだら
         titleScene.onLoad.add(() => {
@@ -22,6 +22,9 @@ class TitleScene {
                 src: titleScene.asset.getImageById("title"),
             })
             titleScene.append(titleImage)
+
+            // 「即日採用」音声を再生
+            titleScene.asset.getAudioById("sokuzitu_saiyou").play();
         })
         return titleScene
     }
