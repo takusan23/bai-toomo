@@ -16,6 +16,14 @@ npm run start
 
 `http://localhost:3000/game/`だと思います。
 
+## アツマール投稿
+
+```
+akashic export html --output game.zip --atsumaru
+```
+
+これて `game.zip` が出来るんので、これをアツマールへ投稿します。
+
 ## エクスポート方法
 
 `typescript-shin-ichiba-ranking-game-sample` をエクスポートするときは以下のコマンドを利用します。

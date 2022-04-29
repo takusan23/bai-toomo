@@ -87,6 +87,7 @@ class GameScene {
                 this.scene.asset.getAudioById("danbooru").play();
                 // 得点に追加して、次の箱へ切り替える
                 onPointReceive(this.nextBox())
+                this.progressBar.setProgress(0)
             }))
             // 最初のダンボール
             this.scene.append(this.boxManager.nextBox(true))
@@ -163,7 +164,9 @@ class GameScene {
         const lostPoint = Math.abs(currentBoxData.maxPoint - currentBoxData.currentPoint)
         const calcPoint = Math.max(0, currentBoxData.maxPoint - lostPoint)
         // 次の箱へ切り替え
-        this.scene.append(this.boxManager.nextBox())
+        // ダンボールの入る大きさを適当に設定する
+        const boxSize = RandomTool.getRandom(3000, 5000)
+        this.scene.append(this.boxManager.nextBox(false, boxSize))
         // 点数を返す
         return calcPoint
     }
@@ -179,11 +182,6 @@ class GameScene {
 
     /** 箱詰めしたダンボールの数 */
     getBoxCount = () => this.boxManager.getBoxCount()
-
-    /** 後始末を行う */
-    destroy = () => {
-        this.scene.onUpdate.removeAll()
-    }
 
     /**
      * 背景を作る

@@ -39,17 +39,9 @@ export function main(param: GameMainParameterObject): void {
 
 		// 最後のダンボール送出を終えたか
 		const updateHandler = () => {
-			if (time <= 0) {
-				// ゲームアツマール環境であればランキングを表示します
-				if (param.isAtsumaru) {
-					const boardId = 1
-					window.RPGAtsumaru.experimental.scoreboards.setRecord(boardId, g.game.vars.gameState.score).then(function () {
-						window.RPGAtsumaru.experimental.scoreboards.display(boardId)
-					});
-				}
-			}
 			// カウントダウン処理
 			time -= 1 / g.game.fps
+
 			// 残り時間を表示。ゲームが遊べる時は60秒。でもゲームは65秒あるので引いておく。
 			gameScene.setTimeText(time - 5)
 
@@ -62,6 +54,15 @@ export function main(param: GameMainParameterObject): void {
 				const boxCount = gameScene.getBoxCount()
 				const score = g.game.vars.gameState.score as number
 				g.game.pushScene(EndScene.createEndScene(score, boxCount))
+
+				// ゲームアツマール環境であればランキングを表示します
+				if (param.isAtsumaru) {
+					const boardId = 1
+					window.RPGAtsumaru.experimental.scoreboards.setRecord(boardId, g.game.vars.gameState.score).then(function () {
+						window.RPGAtsumaru.experimental.scoreboards.display(boardId)
+					});
+				}
+
 			}
 		}
 		gameScene.scene.onUpdate.add(updateHandler)

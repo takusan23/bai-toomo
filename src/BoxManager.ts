@@ -40,7 +40,7 @@ class BoxManager {
      * @param isSkipAnimation アニメーションを飛ばして真ん中にセットする場合はtrue
      * @return ボタンの画像
      */
-    nextBox = (isSkipAnimation: boolean = false): g.Sprite => {
+    nextBox = (isSkipAnimation: boolean = false, maxPoint: number = 3000): g.Sprite => {
         // 今のダンボールを終わらせる。初回時は動かない
         this.finishCurrentBox()
         // Sprite 作成
@@ -52,7 +52,7 @@ class BoxManager {
             y: 200
         })
         // tagに入れる
-        sprite.tag = this.createBoxData()
+        sprite.tag = this.createBoxData(maxPoint)
         this.boxList.push(sprite)
         // 真ん中へ移動させる
         if (isSkipAnimation) {
@@ -116,7 +116,7 @@ class BoxManager {
      * @param maxPoint 最大ポイント
      * @return BoxData
      */
-    private createBoxData = (maxPoint: number = 3000): BoxData => ({
+    private createBoxData = (maxPoint: number): BoxData => ({
         currentPoint: 0,
         maxPoint: maxPoint,
         isFinished: false
