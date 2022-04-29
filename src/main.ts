@@ -13,33 +13,27 @@ const TITLE_VISIBLE_TIME_MS = 5_000
 
 export function main(param: GameMainParameterObject): void {
 
-	const scene = new g.Scene({
-		game: g.game,
-		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
-		assetIds: ["player", "shot", "se"]
-	});
 	/** 制限時間 */
 	let time = GAME_TIME_SEC
 	if (param.sessionParameter.totalTimeLimit) {
 		// セッションパラメータで制限時間が指定されたらその値を使用します
 		time = param.sessionParameter.totalTimeLimit
 	}
+
 	// 市場コンテンツのランキングモードでは、g.game.vars.gameState.score の値をスコアとして扱います
 	g.game.vars.gameState = { score: 0 }
 
 	// タイトル画面を作って切り替える
 	const titleScene = TitleScene.createTitleScene()
+	// ゲーム画面クラス
+	const gameScene = new GameScene((addPoint) => {
+		// 点数加点
+		g.game.vars.gameState.score += addPoint
+		gameScene.setScoreText(g.game.vars.gameState.score)
+	})
 
 	// 5秒待機してからゲーム開始
 	titleScene.setTimeout(() => {
-
-		// クラスの切り出した
-		const gameScene = new GameScene((addPoint) => {
-			// 点数加点
-			g.game.vars.gameState.score += addPoint
-			gameScene.setScoreText(g.game.vars.gameState.score)
-		})
-
 		// 5秒引いておく
 		time -= 5
 
@@ -64,9 +58,10 @@ export function main(param: GameMainParameterObject): void {
 				// 今あるダンボールを最後送る
 				g.game.vars.gameState.score += gameScene.nextBox()
 				// 終了画面へ
-				g.game.pushScene(EndScene.createEndScene())
-				// タイマー停止
-				scene.onUpdate.remove(updateHandler)
+				// GameSceneクラス内のonUpate呼び出しは自動的に解除される(らしい)
+				const boxCount = gameScene.getBoxCount()
+				const score = g.game.vars.gameState.score as number
+				g.game.pushScene(EndScene.createEndScene(score, boxCount))
 			}
 		}
 		gameScene.scene.onUpdate.add(updateHandler)

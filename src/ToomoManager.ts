@@ -21,6 +21,7 @@ class ToomoManager {
         "kiyomizu",
         "mask",
         "syoumei",
+        "lemon"
     ]
 
     /** 出場者一覧、一人何役だよ */

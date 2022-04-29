@@ -175,6 +175,14 @@ class GameScene {
         }, RandomTool.getRandom(100, 500))
     }
 
+    /** 箱詰めしたダンボールの数 */
+    getBoxCount = () => this.boxManager.getBoxCount()
+
+    /** 後始末を行う */
+    destroy = () => {
+        this.scene.onUpdate.removeAll()
+    }
+
     /**
      * 背景を作る
      * @returns 背景

@@ -107,6 +107,9 @@ class BoxManager {
         }
     }
 
+    /** ダンボールに箱詰めした件数 */
+    getBoxCount = () => this.boxList.length
+
     /**
      * BoxData を返す
      * 

@@ -34,8 +34,8 @@
 		"end": {
 			"type": "image",
 			"path": "image/end.png",
-			"width": 360,
-			"height": 180
+			"width": 640,
+			"height": 320
 		},
 		"EndScene": {
 			"type": "script",
