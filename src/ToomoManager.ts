@@ -71,7 +71,7 @@ class ToomoManager {
         const sprite = new g.Sprite({
             scene: this.scene,
             src: image,
-            x: this.gameWidth - image.width,
+            x: this.gameWidth,
             y: 50 - (image.height / 2)
         })
         // tag にデータを入れておく

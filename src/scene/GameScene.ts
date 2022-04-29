@@ -18,7 +18,10 @@ class GameScene {
     private gameHeight = g.game.height
 
     /** 使うアセットのID配列 */
-    private static ASSET_IDS = ToomoManager.ASSET_IDS.concat(BoxManager.ASSET_IDS)
+    private static ASSET_IDS =
+        ToomoManager.ASSET_IDS
+            .concat(BoxManager.ASSET_IDS)
+            .concat(['rail', 'fill_rail'])
 
     /** ゲームが流れているシーン */
     scene = new g.Scene({
@@ -74,6 +77,8 @@ class GameScene {
 
             // 画面に追加する
             this.scene.append(this.createBackgroundRect())
+            this.scene.append(this.createToomoRail())
+            this.scene.append(this.createBoxRail())
             this.scene.append(this.timeLabel)
             this.scene.append(this.scoreLabel)
             // ダンボール追加ボタン。コールバック関数はボタン押したとき
@@ -182,6 +187,36 @@ class GameScene {
             height: this.gameHeight
         })
         return backgroundRect
+    }
+
+    /**
+     * トーモを流すレール画像を作成する
+     * @returns レールの画像
+     */
+    private createToomoRail = () => {
+        const image = this.scene.asset.getImageById("rail")
+        const sprite = new g.Sprite({
+            scene: this.scene,
+            src: image,
+            x: (this.gameWidth - image.width) + 25, // ちょっと食い込ませる
+            y: 80
+        })
+        return sprite
+    }
+
+    /**
+     * ダンボールを流すレール画像を作成する
+     * @returns レールの画像
+     */
+    private createBoxRail = () => {
+        const image = this.scene.asset.getImageById("fill_rail")
+        const sprite = new g.Sprite({
+            scene: this.scene,
+            src: image,
+            x: -10, // 画面外へちょっと出す
+            y: 200 + 70 // ダンボール画像の高さを足している
+        })
+        return sprite
     }
 
 }

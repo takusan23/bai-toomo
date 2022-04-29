@@ -153,6 +153,18 @@
 			"type": "script",
 			"path": "script/ProgressBar.js",
 			"global": true
+		},
+		"rail": {
+			"type": "image",
+			"path": "image/rail.png",
+			"width": 325,
+			"height": 20
+		},
+		"fill_rail": {
+			"type": "image",
+			"path": "image/fill_rail.png",
+			"width": 660,
+			"height": 20
 		}
 	},
 	"moduleMainScripts": {},
